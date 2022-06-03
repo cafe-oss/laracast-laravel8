@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Post;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,9 +16,58 @@ use App\Models\Post;
 
 Route::get('/', function () {
     $posts = Post::all();
-    return view('welcome', [
+    // $files = File::files(resource_path('posts'));
+   
+    // first method is using loop
+    // foreach ($files as $file)
+    // {
+    //     $documents = YamlFrontMatter::parseFile($file);
+
+    //     $posts[] = new Post(
+    //         $documents->title,
+    //         $documents->excerpt,
+    //         $documents->date,
+    //         $documents->body(),
+    //         $documents->slug
+    //     );
+    // }
+
+    // second method is using array map
+    // $posts = array_map(function ($file){
+    //     $documents = YamlFrontMatter::parseFile($file);
+        
+    //     return new Post(
+    //         $documents->title,
+    //         $documents->excerpt,
+    //         $documents->date,
+    //         $documents->body(),
+    //         $documents->slug
+    //     );
+    // }, $files);
+
+    // third method is using collection
+    
+    // $posts = collect($files)
+    //     ->map(function($file){
+    //         return YamlFrontMatter::parseFile($file);
+    //     })
+    //     ->map(function($documents){
+    //         return new Post(
+    //             $documents->title,
+    //             $documents->excerpt,
+    //             $documents->date,
+    //             $documents->body(),
+    //             $documents->slug
+    //         );
+    //     });
+
+     return view('welcome', [
         'posts' => $posts
     ]);
+    
+    // return view('welcome', [
+    //     'posts' => $posts
+    // ]);
     // return ['foo' => 'bar'];
 });
 
