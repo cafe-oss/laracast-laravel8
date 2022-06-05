@@ -37,19 +37,23 @@ class Post{
         //     return $file->getContents();
         // }, $files);
 
-        // second method
-        return collect($files)
-        ->map(function($file){
-            return YamlFrontMatter::parseFile($file);
-        })
-        ->map(function($documents){
-            return new Post(
-                $documents->title,
-                $documents->excerpt,
-                $documents->date,
-                $documents->body(),
-                $documents->slug
-            );
+        // second method with cache rememberForever
+        return cache()->rememberForever('post.all', function() use ($files){
+            return collect($files)
+                ->map(function($file){
+                    return YamlFrontMatter::parseFile($file);
+                })
+                ->map(function($documents){
+                    return new Post(
+                        $documents->title,
+                        $documents->excerpt,
+                        $documents->date,
+                        $documents->body(),
+                        $documents->slug
+                    );
+                })
+                // or you can ->sortBy('Date', SORT_REGULAR, true);
+                ->sortByDesc('date');
         });
     }
 

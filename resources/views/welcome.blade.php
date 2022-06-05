@@ -1,27 +1,15 @@
-<!DOCTYPE html>
-{{-- <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"> --}}
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+{{-- option 1 layout --}}
+@extends('layout1')
+@section('content')
+    <?php foreach($posts as $post): ?>
+        <article>
+            <h1><a href= "posts/<?= $post->slug; ?>" ><?= $post->title; ?> </a></h1>
+            <?= $post->excerpt; ?>
+        </article>
+    <?php endforeach; ?>
+@endsection
 
-        <title>My BLog</title>
+{{-- <x-layout2>
+    ..
+</x-layout2> --}}
 
-        <!-- Fonts -->
-        {{-- <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"> --}}
-        <link rel="stylesheet" href="/app.css">
-        {{-- <script src="/app.js"></script> --}}
-        {{-- <style>
-            body {
-                font-family: 'Nunito', sans-serif;
-            }
-        </style> --}}
-    </head>
-    <body>
-        <?php foreach($posts as $post): ?>
-            <article>
-               <h1><a href= "posts/<?= $post->slug; ?>" ><?= $post->title; ?> </a></h1>
-               <?= $post->excerpt; ?>
-            </article>
-        <?php endforeach; ?>
-    </body>
-</html>
