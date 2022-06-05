@@ -23,8 +23,8 @@ class Post{
         $this->date = $date;
         $this->body = $body;
         $this->slug = $slug;
-
     }
+
     public static function all(){
         // first method
         // file facade it allows usage of static access of all sorts of functionality
@@ -76,7 +76,17 @@ class Post{
         // });
 
         // second method 
-        $posts = static::all();
-        return $posts->firstWhere('slug', $slug);
+        // $posts = static::all();
+        // return $posts->firstWhere('slug', $slug);
+
+        // third method slug na naa sa Post object equivalent ba sa gehatag sa slug
+        $post = static::all()->firstWhere('slug', $slug);
+
+        if(! $post)
+        {
+            throw new ModelNotFoundException;
+        }
+
+        return $post;
     }
 }

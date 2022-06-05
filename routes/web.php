@@ -80,4 +80,6 @@ Route::get('posts/{post}', function($slug){
     ]);
 
     // constraints sa wild card if dili matuman ang constraints pag return sya ug page 404 not found
-})->where('post', '[A-z_\-]+');
+});
+// ep16 removed 
+// })->where('post', '[A-z_\-]+');
