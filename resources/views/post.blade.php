@@ -3,8 +3,13 @@
 @section('content')
     <article>
         <article>
-            <h1><?= $post->title; ?></h1>
-            <?= $post->body; ?>
+            <h1>
+                {{-- <'?=  ?> (removed the single quote and it will be equivalent to { !! !!})--}}
+                <?= $post->title; ?>
+            </h1>
+                <p>
+                    {{$post->body }}
+                </p>
             </article>
     </article>
 

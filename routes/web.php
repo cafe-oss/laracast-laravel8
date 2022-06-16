@@ -17,7 +17,7 @@ use App\Models\Post;
 Route::get('/', function () {
     $posts = Post::all();
     // $files = File::files(resource_path('posts'));
-   
+    // documents = [];
     // first method is using loop
     // foreach ($files as $file)
     // {
@@ -32,6 +32,7 @@ Route::get('/', function () {
     //     );
     // }
 
+    // documents = [];
     // second method is using array map
     // $posts = array_map(function ($file){
     //     $documents = YamlFrontMatter::parseFile($file);
@@ -71,8 +72,8 @@ Route::get('/', function () {
     // return ['foo' => 'bar'];
 });
 
-Route::get('posts/{post}', function($slug){
-    $post = Post::find($slug);
+Route::get('posts/{post}', function($id){
+    $post = Post::find($id);
 
     return view('post', [
         'post'=> $post

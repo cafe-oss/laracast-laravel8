@@ -3,7 +3,7 @@
 @section('content')
     <?php foreach($posts as $post): ?>
         <article>
-            <h1><a href= "posts/<?= $post->slug; ?>" ><?= $post->title; ?> </a></h1>
+            <h1><a href= "posts/<?= $post->id; ?>" ><?= $post->title; ?> </a></h1>
             <?= $post->excerpt; ?>
         </article>
     <?php endforeach; ?>
