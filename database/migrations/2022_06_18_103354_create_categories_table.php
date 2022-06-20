@@ -13,16 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("category_id");
-            $table->foreignId("user_id");
-            $table->string("title");
+            $table->string("name")->unique();
             $table->string("slug")->unique();
-            $table->text("excerpt");
-            $table->text("body");
-            // timtestamp with "s" has no column name and without "s" has 
-            $table->timestamp("published_at")->nullable();
             $table->timestamps();
         });
     }
@@ -34,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('categories');
     }
 };

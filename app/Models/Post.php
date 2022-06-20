@@ -18,9 +18,28 @@ class Post extends Model
     protected $fillable = [
         "title",
         "excerpt",
-        "body"
+        "body",
+        "slug",
+        "category_id"
     ];
 
     use HasFactory;
+
+    // route model binding
+    // public function getRouteKeyName()
+    // {
+    //     return "slug";
+    // }
+
+    // eloquent relationship ep 24
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

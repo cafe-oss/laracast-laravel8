@@ -5,13 +5,25 @@
         <article>
             <h1>
                 {{-- <'?=  ?> (removed the single quote and it will be equivalent to { !! !!})--}}
-                <?= $post->title; ?>
+                {{-- @dd($post) --}}
+                {{$post->title}}
             </h1>
                 <p>
-                    {{$post->body }}
+                    <a href="#"> {{$post->user->name }} </a>
                 </p>
+                <p>
+                    <a href="/categories/{{$post->category->slug}}"> {{$post->category->name }} </a>
+                </p>
+
+                <div>
+                    <p>
+                        {{$post->body }}
+                    </p>
+                </div>
+
             </article>
     </article>
+    
 
     <a href="/">Go Back</a>
     @endsection

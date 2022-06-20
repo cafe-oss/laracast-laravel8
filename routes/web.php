@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Post;
+use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,15 @@ use App\Models\Post;
 */
 
 Route::get('/', function () {
-    $posts = Post::all();
+    
+    //This was what to change if you have a N+1 problem 
+    // $posts = Post::all();
+
+    // return view('welcome', [
+    //     'posts' => $posts
+    // ]);
+    // return ['foo' => 'bar'];
+
     // $files = File::files(resource_path('posts'));
     // documents = [];
     // first method is using loop
@@ -62,25 +71,47 @@ Route::get('/', function () {
     //         );
     //     });
 
+    // first method in debugging what happens in the sql query execution and $query->bindings means that it will display the id like `categories`.`id` = ? limit 1 [1]
+    // \Illuminate\Support\Facades\DB::listen(function($query){
+    // //\Illuminate\Support\Facades\Log::info();
+    //  //is the same as
+      
+    //     logger($query->sql, $query->bindings);
+      
+    //  });
+    
+    // solution if you have N+1 problem
      return view('welcome', [
-        'posts' => $posts
+        'posts' => Post::with('category')->get()
     ]);
     
-    // return view('welcome', [
-    //     'posts' => $posts
-    // ]);
-    // return ['foo' => 'bar'];
+    
 });
+// using post:slug for using slug instead id 
+Route::get('posts/{post:slug}', function(Post $post){
+    // $post = Post::find($id);
 
-Route::get('posts/{post}', function($id){
-    $post = Post::find($id);
+    // return view('post', [
+    //     'post'=> $post
+    //     // 'post' => '<h1> Hi </h1>'
+    // ]);
 
+
+    // using route model binding only this
     return view('post', [
-        'post'=> $post
-        // 'post' => '<h1> Hi </h1>'
-    ]);
+            'post'=> $post
+        ]);
+
 
     // constraints sa wild card if dili matuman ang constraints pag return sya ug page 404 not found
 });
 // ep16 removed 
 // })->where('post', '[A-z_\-]+');
+
+Route::get('/categories/{category:slug}', function(Category $category){
+    // dd($category->posts); pag feel nimo na dli ma access etry lang ug loop
+    return view('welcome', [
+            'posts'=> $category->posts
+        ]);
+
+});
