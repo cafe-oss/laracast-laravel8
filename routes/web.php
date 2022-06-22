@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\Post;
 use App\Models\Category;
-
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -82,7 +82,17 @@ Route::get('/', function () {
     
     // solution if you have N+1 problem
      return view('welcome', [
-        'posts' => Post::with('category')->get()
+        // this has N+1 solution but do not sort the post properly by published_at
+        // 'posts' => Post::with('category')->get()
+
+        // this has N+1 solution but do sort the post properly by published_at
+        'posts' => Post::latest("published_at")->with(['category', 'author'])->get()
+
+        // alternative of eager load
+        // 'posts' => Post::latest("published_at")->get()
+
+        //  alternative sa eager load ug without ato
+        // 'posts' => Post::without(["author", "category"])->get()
     ]);
     
     
@@ -99,10 +109,15 @@ Route::get('posts/{post:slug}', function(Post $post){
 
     // using route model binding only this
     return view('post', [
-            'post'=> $post
-        ]);
+            // with eager load
+            'post'=> $post->load(['category', 'author'])
 
+            // alternative sa eager load
+            // 'post'=> $post
 
+            // alternative sa eager load ug without ato
+            // 'post'=> $post->without(['author', 'category'])
+    ]);
     // constraints sa wild card if dili matuman ang constraints pag return sya ug page 404 not found
 });
 // ep16 removed 
@@ -111,7 +126,27 @@ Route::get('posts/{post:slug}', function(Post $post){
 Route::get('/categories/{category:slug}', function(Category $category){
     // dd($category->posts); pag feel nimo na dli ma access etry lang ug loop
     return view('welcome', [
-            'posts'=> $category->posts
-        ]);
+            // with eager load
+            'posts'=> $category->posts->load(['category', 'author'])
 
+            // alternative sa eager load
+            // 'posts'=> $category->posts
+
+            // alternative sa eager load ug without ato
+            // 'posts'=> $category->posts->without(["author", "category"])
+    ]);
+});
+
+Route::get('/authors/{author:username}', function(User $author){
+    
+    return view('welcome', [
+            // eager load
+            'posts'=> $author->posts->load(['category', 'author'])
+
+            // there is alternative of doing this eager post naa sa App\Models\Post tas pangita ang protected $with tas dani sa route kay wala-on nimo ang mga with() load()
+            // 'posts'=> $author->posts  
+
+            // alternative sa eager load ug without ato
+            // 'posts'=> $author->posts->without(["author", "category"])
+        ]);
 });

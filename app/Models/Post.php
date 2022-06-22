@@ -23,6 +23,12 @@ class Post extends Model
         "category_id"
     ];
 
+    // kani ang alternative sa eager load, it assumes na pag tawagon nimo ang post sa route/controller kay muuban permi ang category ug author padulong sa view 
+    // protected $with =[
+    //     'category',
+    //     'author'
+    // ];
+
     use HasFactory;
 
     // route model binding
@@ -37,9 +43,13 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function user()
+    public function author()
     {
-        return $this->belongsTo(User::class);
+        //if the function name here is not equivalent to he model name, then it will have an error becuase laravel will assume the foreign id as function_name_id instead of your foreign id 
+        // return $this->belongsTo(User::class);
+
+        // solution to that problem is specify the foreign as parameter in belongsTo method
+        return $this->belongsTo(User::class, "user_id");
     }
 
 }
