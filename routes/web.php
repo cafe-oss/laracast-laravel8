@@ -81,13 +81,13 @@ Route::get('/', function () {
     //  });
     
     // solution if you have N+1 problem
-     return view('welcome', [
+     return view('posts', [
         // this has N+1 solution but do not sort the post properly by published_at
         // 'posts' => Post::with('category')->get()
 
         // this has N+1 solution but do sort the post properly by published_at
-        'posts' => Post::latest("published_at")->with(['category', 'author'])->get()
-
+        'posts' => Post::latest("published_at")->with(['category', 'author'])->get(),
+        'categories' => Category::all()
         // alternative of eager load
         // 'posts' => Post::latest("published_at")->get()
 
@@ -95,8 +95,8 @@ Route::get('/', function () {
         // 'posts' => Post::without(["author", "category"])->get()
     ]);
     
-    
-});
+    // solution sa episode 35, isearch sa gdocs = solves the problem how do I set the current link active? 
+})->name('home');
 // using post:slug for using slug instead id 
 Route::get('posts/{post:slug}', function(Post $post){
     // $post = Post::find($id);
@@ -110,7 +110,8 @@ Route::get('posts/{post:slug}', function(Post $post){
     // using route model binding only this
     return view('post', [
             // with eager load
-            'post'=> $post->load(['category', 'author'])
+            'post'=> $post->load(['category', 'author']),
+            'categories' => Category::all()
 
             // alternative sa eager load
             // 'post'=> $post
@@ -125,9 +126,11 @@ Route::get('posts/{post:slug}', function(Post $post){
 
 Route::get('/categories/{category:slug}', function(Category $category){
     // dd($category->posts); pag feel nimo na dli ma access etry lang ug loop
-    return view('welcome', [
+    return view('posts', [
             // with eager load
-            'posts'=> $category->posts->load(['category', 'author'])
+            'posts'=> $category->posts->load(['category', 'author']),
+            'categories' => Category::all(),
+            'currentCategory' => $category
 
             // alternative sa eager load
             // 'posts'=> $category->posts
@@ -135,7 +138,7 @@ Route::get('/categories/{category:slug}', function(Category $category){
             // alternative sa eager load ug without ato
             // 'posts'=> $category->posts->without(["author", "category"])
     ]);
-});
+})->name('category');
 
 Route::get('/authors/{author:username}', function(User $author){
     
