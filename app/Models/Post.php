@@ -52,4 +52,23 @@ class Post extends Model
         return $this->belongsTo(User::class, "user_id");
     }
 
+    // create a postfilter ep38
+    public function scopeFilter($query, array $filters)
+    {
+        // second approach of clean search
+        // if($filters['search'])
+        // {
+        //     $query
+        //         ->where('title', 'like', '%' . $filters['search'] . '%')
+        //         ->orWhere('body', 'like', '%' . $filters['search'] . '%');
+        // }
+
+        //alternative of second approach of clean search
+        $query->when($filters['search'] ?? false, function($query, $search){
+            return $query
+                        ->where('title', 'like', '%' . $search . '%')
+                        ->orWhere('title', 'like', '%' . $search . '%');
+        });
+    }
+
 }

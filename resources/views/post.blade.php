@@ -46,11 +46,11 @@
                 </h1>
 
                 <div class="space-y-4 lg:text-lg leading-loose">
-                    <p> {{ $post->excerpt}}</p>
+                    {!! $post->excerpt!!}
 
                     <h2 class="font-bold text-lg"></h2>
 
-                    <p>{{ $post->body}}</p>
+                    {!! $post->body!!}
 
                 </div>
             </div>
