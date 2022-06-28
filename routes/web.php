@@ -156,32 +156,32 @@ Route::get('posts/{post:slug}', [PostController::class, 'show']);
 // ep16 removed 
 // })->where('post', '[A-z_\-]+');
 
-Route::get('/categories/{category:slug}', function(Category $category){
-    // dd($category->posts); pag feel nimo na dli ma access etry lang ug loop
-    return view('posts', [
-            // with eager load
-            'posts'=> $category->posts->load(['category', 'author']),
-            'categories' => Category::all(),
-            'currentCategory' => $category
+// Route::get('/categories/{category:slug}', function(Category $category){
+//     // dd($category->posts); pag feel nimo na dli ma access etry lang ug loop
+//     return view('posts', [
+//             // with eager load
+//             'posts'=> $category->posts->load(['category', 'author']),
+//             'categories' => Category::all(),
+//             'currentCategory' => $category
 
-            // alternative sa eager load
-            // 'posts'=> $category->posts
+//             // alternative sa eager load
+//             // 'posts'=> $category->posts
 
-            // alternative sa eager load ug without ato
-            // 'posts'=> $category->posts->without(["author", "category"])
-    ]);
-})->name('category');
+//             // alternative sa eager load ug without ato
+//             // 'posts'=> $category->posts->without(["author", "category"])
+//     ]);
+// })->name('category');
 
-Route::get('/authors/{author:username}', function(User $author){
+// Route::get('/authors/{author:username}', function(User $author){
     
-    return view('welcome', [
-            // eager load
-            'posts'=> $author->posts->load(['category', 'author'])
+//     return view('posts.index', [
+//             // eager load
+//             'posts'=> $author->posts->load(['category', 'author'])
 
-            // there is alternative of doing this eager post naa sa App\Models\Post tas pangita ang protected $with tas dani sa route kay wala-on nimo ang mga with() load()
-            // 'posts'=> $author->posts  
+//             // there is alternative of doing this eager post naa sa App\Models\Post tas pangita ang protected $with tas dani sa route kay wala-on nimo ang mga with() load()
+//             // 'posts'=> $author->posts  
 
-            // alternative sa eager load ug without ato
-            // 'posts'=> $author->posts->without(["author", "category"])
-        ]);
-});
+//             // alternative sa eager load ug without ato
+//             // 'posts'=> $author->posts->without(["author", "category"])
+//         ]);
+// });

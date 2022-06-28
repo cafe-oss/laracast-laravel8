@@ -1,6 +1,6 @@
 <x-layout-section5>
 
-    @include('_posts-header') 
+    @include('posts._header') 
 
     <main class="max-w-6xl mx-auto mt-6 lg:mt-20 space-y-6">
         {{-- pass the $posts[0] to post-featured-card view so use this :post="$post[0]", in this file we route and pass the Post data --}}

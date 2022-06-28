@@ -24,10 +24,10 @@ class Post extends Model
     ];
 
     // kani ang alternative sa eager load, it assumes na pag tawagon nimo ang post sa route/controller kay muuban permi ang category ug author padulong sa view 
-    // protected $with =[
-    //     'category',
-    //     'author'
-    // ];
+    protected $with =[
+        'category',
+        'author'
+    ];
 
     use HasFactory;
 
@@ -65,9 +65,27 @@ class Post extends Model
 
         //alternative of second approach of clean search
         $query->when($filters['search'] ?? false, function($query, $search){
-            return $query
-                        ->where('title', 'like', '%' . $search . '%')
-                        ->orWhere('title', 'like', '%' . $search . '%');
+            return $query->where(function($query) use ($search){
+                return $query->where('title', 'like', '%' . $search . '%')
+                             ->orWhere('title', 'like', '%' . $search . '%');
+            });
+        });
+
+        $query->when($filters['category'] ?? false, function($query, $category){
+            return $query->whereExists(function($query) use ($category){
+                            return $query->from('categories')
+                                         ->whereColumn('categories.id', 'posts.category_id')
+                                         ->where('categories.slug', $category);
+                        });
+
+        });
+
+        //alternative of second approach of clean search and same with "where exists"
+        $query->when($filters['author'] ?? false, function($query, $author){
+            return $query->whereHas('author', function($query) use($author){
+                return $query->where('username', $author);
+            });
+
         });
     }
 
