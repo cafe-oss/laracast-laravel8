@@ -10,12 +10,13 @@
         {{-- WAYS to check if null = $posts->count() > 1 OR $posts->isNotEmpty() or isset($posts)--}}
         @if (isset($posts))
             {{-- posts[0] or posts->first() --}}
+            
             <x-post-featured-card :post="$posts->first()"/>
 
             <div class="lg:grid lg:grid-cols-6">
                 {{-- we need to bypass the $posts[0] --}}
                 @foreach ($posts->skip(1) as $post)
-
+                    
                     {{-- gamit ni siya para info sa mga loop pero dapat sa loop  --}}
                     {{-- @dd($loop) --}}
                     {{-- <x-post-card :post="$post"  --}}
@@ -24,6 +25,8 @@
                 @endforeach
                 
             </div>
+
+            {{ $posts->links() }}
         @else
             <p class="text-center"></p>
         @endif
@@ -33,6 +36,7 @@
             <x-post-card />
             <x-post-card /> 
         </div> --}}
+
     </main>
 </x-layout-section5>
         

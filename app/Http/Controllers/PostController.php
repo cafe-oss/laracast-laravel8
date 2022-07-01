@@ -24,12 +24,16 @@ class PostController extends Controller
         // second approach of clean search
         return view('posts.index', [
             
-            'posts' => Post::latest("published_at")->filter(request(['search', 'category', 'author']))->get()
+
+            // 'posts' => Post::latest("published_at")->filter(request(['search', 'category', 'author']))->get()
             // 'categories' => Category::all(),
             //kaning firstWhere kay same sa Route::get('/categories/{category:slug}', function(Category $category)
             // kay pangitaon niya ang slug sa given na ge search na category
             // 'currentCategory' => Category::firstWhere('slug', request('category'))
             
+            // paginate
+            'posts' => Post::latest("published_at")->filter(request(['search', 'category', 'author']))->paginate(6)->withQueryString()
+
         ]);
     }
 
