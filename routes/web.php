@@ -5,6 +5,8 @@ use App\Models\Post;
 use App\Models\Category;
 use App\Models\User;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SessionController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -147,12 +149,6 @@ use App\Http\Controllers\PostController;
 
 
 
-// passed to the postController 
-Route::get('/', [PostController::class, 'index'])->name('home');
-Route::get('posts/{post:slug}', [PostController::class, 'show']);
-
-
-
 // ep16 removed 
 // })->where('post', '[A-z_\-]+');
 
@@ -185,3 +181,16 @@ Route::get('posts/{post:slug}', [PostController::class, 'show']);
 //             // 'posts'=> $author->posts->without(["author", "category"])
 //         ]);
 // });
+
+// passed to the postController 
+Route::get('/', [PostController::class, 'index'])->name('home');
+Route::get('posts/{post:slug}', [PostController::class, 'show']);
+
+//section 9 forms and authentication 
+Route::get('register', [RegisterController::class,'create'])->middleware('guest');
+Route::post('register', [RegisterController::class,'store'])->middleware('guest');
+
+//section 9 logout and login
+Route::post('logout', [SessionController::class,'destroy'])->middleware('auth');
+Route::get('login', [SessionController::class,'create'])->middleware('guest');
+Route::post('login', [SessionController::class,'store'])->middleware('guest');
