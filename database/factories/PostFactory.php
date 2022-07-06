@@ -22,8 +22,8 @@ class PostFactory extends Factory
         //laravel will automatically create a //user and grab the id and assigned it 
         "user_id" =>  User::factory(),
         "category_id" => Category::factory(),
-        "title" => $this->faker->sentence,
-        "slug" => $this->faker->slug,
+        "title" => $this->faker->sentence(),
+        "slug" => $this->faker->unique()->slug(),
         "excerpt" => '<p>' . implode('</p><p>', $this->faker->paragraphs(2)) . '</p>',
         "body" => '<p>' . implode('</p><p>', $this->faker->paragraphs(6)) . '</p>'
         

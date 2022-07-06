@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\Comment;
 
 class DatabaseSeeder extends Seeder
 {
@@ -70,6 +71,9 @@ class DatabaseSeeder extends Seeder
         $category = Category::factory()->create();
         $post = Post::factory(20)->create([
             "category_id" => $category->id,
+        ]);
+        $comment = Comment::factory(10)->create([
+            "post_id" => 1
         ]);
     
         

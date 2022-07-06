@@ -40,7 +40,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
 
-        return view('post.show', [
+        return view('posts.show', [
 
             'post'=> $post->load(['category', 'author']),
             'categories' => Category::all()

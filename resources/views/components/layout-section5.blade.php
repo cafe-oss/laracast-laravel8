@@ -18,6 +18,8 @@
             <div class="mt-8 md:mt-0 flex items-center">
                 {{-- if you are not a guest then --}}
                 @auth
+                    <img src="https://i.pravatar.cc/60?u={{ auth()->user()->id }}" alt="" width="60" height="60" class="rounded-xl mr-6">
+
                     <span class="text-xs font-bold uppercase"> {{ auth()->user()->name }}</span>
 
                     <form action="/logout" method="POST" class="text-xs font-semibold text-blue-500 ml-6">

@@ -15,13 +15,13 @@ class Post extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        "title",
-        "excerpt",
-        "body",
-        "slug",
-        "category_id"
-    ];
+    // protected $fillable = [
+    //     "title",
+    //     "excerpt",
+    //     "body",
+    //     "slug",
+    //     "category_id"
+    // ];
 
     // kani ang alternative sa eager load, it assumes na pag tawagon nimo ang post sa route/controller kay muuban permi ang category ug author padulong sa view 
     protected $with =[
@@ -50,6 +50,11 @@ class Post extends Model
 
         // solution to that problem is specify the foreign as parameter in belongsTo method
         return $this->belongsTo(User::class, "user_id");
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
     // create a postfilter ep38
