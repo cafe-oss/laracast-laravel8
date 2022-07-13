@@ -5,6 +5,9 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\PostCommentsController;
+use App\Http\Controllers\NewsletterController;
+use MailchimpMarketing\ApiClient;
+use App\Services\Newsletter;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -195,3 +198,64 @@ Route::post('login', [SessionController::class,'store'])->middleware('guest');
 
 // section 10 active the comment form 
 Route::post('posts/{post:slug}/comments', [PostCommentsController::class,'store'])->middleware('auth');
+
+// section 11
+ 
+// Route::get('ping', function(){
+   
+//     $mailchimp = new \MailchimpMarketing\ApiClient();
+     
+//     $mailchimp->setConfig([
+//         'apiKey' => config('services.mailchimp.key'),
+//         'server' => 'us14',
+//     ]);
+     
+//     $response = $mailchimp->ping->get();
+//     // $response = $mailchimp->lists->getAllLists();
+//     // $response = $mailchimp->lists->getList('d617facd7f');
+//     // $response = $mailchimp->lists->getListMembersInfo('d617facd7f');
+//     // $response = $mailchimp->lists->addListMember('d617facd7f', [
+//     //     'email_address' => 'cut3alvin@gmail.com',
+//     //     'status' => 'subscribed',
+//     // ]);
+
+//     dd($response);
+// });
+
+// first and simple approach of control flow of the project
+// Route::post('newsletter', function(){
+//     request()->validate(['email'=>'required|email']);
+
+//     try {
+//         $newsletter = new Newsletter();
+//         $newsletter->subscribe(request('email'));
+
+//     } catch (\Exception $th) {
+//         throw \Illuminate\Validation\ValidationException::withMessages([
+//             'email' => 'This email could not be added to our newsletter list'
+//         ]);
+//     }
+
+//     return redirect('/')->with('success', 'You are now signed up for our newsletter');
+
+// });
+    
+// second approach using the injection
+// Route::post('newsletter', function(Newsletter $newsletter){
+//     request()->validate(['email'=>'required|email']);
+
+//     try {
+//         $newsletter->subscribe(request('email'));
+
+//     } catch (\Exception $th) {
+//         throw \Illuminate\Validation\ValidationException::withMessages([
+//             'email' => 'This email could not be added to our newsletter list because it may be invalid or is already in our list',
+//         ]);
+//     }
+
+//     return redirect('/')->with('success', 'You are now signed up for our newsletter');
+
+// });
+
+// second approach with controller
+Route::post('newsletter', NewsletterController::class);

@@ -31,4 +31,15 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'mailchimp' => [
+        'key' => env('MAILCHIMP_KEY'),
+        'lists' => [
+            // first approach in section11, creating identifier for list_id, second approach is located at .env
+            // 'subscribers' => 'd617facd7f',
+            
+            // secondapproach
+            'subscribers' => env('MAILCHIMP_LIST_SUBSCRIBERS'),
+        ],
+    ],
+
 ];
