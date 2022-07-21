@@ -8,6 +8,9 @@ use Illuminate\Support\ServiceProvider;
 use MailchimpMarketing\ApiClient;
 use App\Services\MailchimpNewsletter;
 use App\Services\Newsletter;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -42,5 +45,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Model::unguard();
+
+        
+        // section 12, use the GATE to have a better authorization logic
+        Gate::define('admin', function(User $user){
+            return $user->username == 'jhondoe';
+        });
+
+        // create my own blade directive <@admin>
+        // Blade::if('admin', function(){
+        //     return request()->user()?->can('admin');
+        // });
     }
 }

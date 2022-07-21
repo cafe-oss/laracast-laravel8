@@ -1,7 +1,7 @@
 @props(['trigger'])
 
 {{-- we need to display the hidden anchor tags and it will only show if it is click  --}}
-<div x-data="{ show : false }" @click.outside= " show = false ">
+<div x-data="{ show : false }" @click.outside= " show = false " class="relative">
     {{-- trigger --}}
    <div @click = " show = ! show">
         {{$trigger}}

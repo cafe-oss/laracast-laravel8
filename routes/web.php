@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\PostCommentsController;
@@ -259,3 +260,35 @@ Route::post('posts/{post:slug}/comments', [PostCommentsController::class,'store'
 
 // second approach with controller
 Route::post('newsletter', NewsletterController::class);
+
+// section12 using the middleware 'admin'
+// Route::get('admin/posts/create', [AdminPostController::class, 'create'])->middleware('admin');
+// Route::post('admin/posts', [AdminPostController::class, 'store'])->middleware('admin');
+
+// Route::get('admin/posts', [AdminPostController::class, 'index'])->middleware('admin');
+// Route::get('admin/posts/{post}/edit', [AdminPostController::class, 'edit'])->middleware('admin');
+// Route::patch('admin/posts/{post}', [AdminPostController::class, 'update'])->middleware('admin');
+// Route::delete('admin/posts/{post}', [AdminPostController::class, 'destroy'])->middleware('admin');
+
+// section12 using the middleware 'admin' with 'can'
+// Route::get('admin/posts/create', [AdminPostController::class, 'create'])->middleware('can:admin');
+// Route::post('admin/posts', [AdminPostController::class, 'store'])->middleware('can:admin');
+// Route::get('admin/posts', [AdminPostController::class, 'index'])->middleware('can:admin');
+// Route::get('admin/posts/{post}/edit', [AdminPostController::class, 'edit'])->middleware('can:admin');
+// Route::patch('admin/posts/{post}', [AdminPostController::class, 'update'])->middleware('can:admin');
+// Route::delete('admin/posts/{post}', [AdminPostController::class, 'destroy'])->middleware('can:admin');
+
+// section12 group the routes with the same middleware first approach
+// Route::middleware('can:admin')->group(function(){
+//     Route::get('admin/posts/create', [AdminPostController::class, 'create'])->middleware('can:admin');
+//     Route::post('admin/posts', [AdminPostController::class, 'store'])->middleware('can:admin');
+//     Route::get('admin/posts', [AdminPostController::class, 'index'])->middleware('can:admin');
+//     Route::get('admin/posts/{post}/edit', [AdminPostController::class, 'edit'])->middleware('can:admin');
+//     Route::patch('admin/posts/{post}', [AdminPostController::class, 'update'])->middleware('can:admin');
+//     Route::delete('admin/posts/{post}', [AdminPostController::class, 'destroy'])->middleware('can:admin');
+// });
+
+// section12 group the routes with the same middleware second approach
+Route::middleware('can:admin')->group(function(){
+    Route::resource('admin/posts', AdminPostController::class)->except('show');
+});

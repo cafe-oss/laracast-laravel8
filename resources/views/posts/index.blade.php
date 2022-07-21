@@ -23,7 +23,6 @@
                     {{-- add if statement that determine which post should have grid col-span2 and col-span3 --}}
                     <x-post-card :post="$post" class="{{$loop->iteration < 3 ?  'col-span-3' : 'col-span-2'}}"/>
                 @endforeach
-                
             </div>
 
             {{ $posts->links() }}

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Category;
-use App\Models\User;
+use Illuminate\Validation\Rule;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -22,7 +24,7 @@ class PostController extends Controller
         // }
 
         // second approach of clean search
-        return view('posts.index', [
+        // return view('posts.index', [
             
 
             // 'posts' => Post::latest("published_at")->filter(request(['search', 'category', 'author']))->get()
@@ -32,9 +34,28 @@ class PostController extends Controller
             // 'currentCategory' => Category::firstWhere('slug', request('category'))
             
             // paginate
-            'posts' => Post::latest("published_at")->filter(request(['search', 'category', 'author']))->paginate(6)->withQueryString()
+            // 'posts' => Post::latest()->filter(request(['search', 'category', 'author']))->paginate(6)->withQueryString()
+
+        // ]);
+
+        // section 12, admin
+        // first approach use of GATE facades
+        // dd(Gate::allows('admin'));
+
+        // second approach 
+        // dd(request()->user()->can('admin'));
+
+        // third approach is using the authrize() 
+        // dd($this->authorize('admin'));
+
+        // more solution in about admin authorization on layout-section5
+
+        return view('posts.index', [
+            'posts' => Post::latest()->filter(request(['search', 'category', 'author']))->paginate(6)->withQueryString()
 
         ]);
+
+
     }
 
     public function show(Post $post)
@@ -59,6 +80,56 @@ class PostController extends Controller
     //             ->orWhere('body', 'like', '%' . request('search') . '%');
     //     }
     //     return $posts->get();
+    // }
+
+    // this is passed to the adminpostController
+    // public function create()
+    // {
+    //     // first approach
+    //     // if(auth()->guest()){
+    //     //     abort(Response::HTTP_FORBIDDEN);
+            
+    //     // }
+
+    //     // if(auth()->user()->username !== 'jhondoe'){
+    //     //     abort(Response::HTTP_FORBIDDEN);
+    //     // }
+
+    //     // second approach or this abort_if(auth()->user()?->username !== 'jhondoe', Response::HTTP_FORBIDDEN);
+    //     // if(auth()->user()?->username !== 'jhondoe'){
+    //     //     abort(Response::HTTP_FORBIDDEN);
+    //     // }
+
+    //     // third approach is to create a 'admin' middleware, goto the MustbeAdmin and migrate the second approach
+
+    //     return view('admin.posts.create');
+    // }
+
+
+    // this is passed to the adminpostController
+    // public function store()
+    // {
+
+    //     $attributes = request()->validate([
+    //         'title' => 'required',
+    //         'slug' => ['required', Rule::unique('posts', 'slug')],
+    //         'excerpt' => 'required',
+    //         'body' => 'required',
+    //         'category_id' => ['required', Rule::exists('categories', 'id')],
+    //     ]);
+
+
+    //     $attributes['user_id'] = auth()->id();
+
+    //     // $path = request()->file('thumbnail')->store('thumbnails');
+
+    //     // return 'done'. $path;
+
+    //     $attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
+
+    //     Post::create($attributes);
+            
+    //     return redirect('/');
     // }
 
 

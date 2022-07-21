@@ -30,16 +30,63 @@
             </div>
 
             <div class="mt-8 md:mt-0 flex items-center">
+    
                 {{-- if you are not a guest then --}}
                 @auth
-                    <img src="https://i.pravatar.cc/60?u={{ auth()->user()->id }}" alt="" width="60" height="60" class="rounded-xl mr-6">
+                    <x-dropdown>
+                        <x-slot name="trigger">
+                            <img src="https://i.pravatar.cc/60?u={{ auth()->user()->id }}" alt="" width="60" height="60" class="rounded-xl mr-6">
+                            {{-- <span class="text-xs font-bold uppercase"> {{ auth()->user()->name }}</span> --}}
+                        </x-slot>
 
-                    <span class="text-xs font-bold uppercase"> {{ auth()->user()->name }}</span>
+                        {{-- solution 1 for authorization admin, using @if --}}
+                        {{-- @if (auth()->user()->can('admin'))
+                            <x-dropdown-item href="/admin/posts" :active="request()->is('admin/posts')">
+                                Dashboard
+                            </x-dropdown-item>
 
-                    <form action="/logout" method="POST" class="text-xs font-semibold text-blue-500 ml-6">
+                            <x-dropdown-item href="/admin/posts/create" :active="request()->is('admin/posts/create')">
+                                New Post
+                            </x-dropdown-item>
+                        @endif --}}
+
+                        {{-- solution 2 using the @can directive--}}
+                        @can('admin')
+                            <x-dropdown-item href="/admin/posts" :active="request()->is('admin/posts')">
+                                Dashboard
+                            </x-dropdown-item>
+
+                            <x-dropdown-item href="/admin/posts/create" :active="request()->is('admin/posts/create')">
+                                New Post
+                            </x-dropdown-item>
+                        @endcan
+
+                        {{-- solution 3, making own blade directive --}}
+                        {{-- @admin
+                            <x-dropdown-item href="/admin/posts" :active="request()->is('admin/posts')">
+                                Dashboard
+                            </x-dropdown-item>
+
+                            <x-dropdown-item href="/admin/posts/create" :active="request()->is('admin/posts/create')">
+                                New Post
+                            </x-dropdown-item>
+                        @endadmin --}}
+
+                        <x-dropdown-item href="/" x-data="{}" @click.prevent="document.querySelector('#logout-form').submit()">
+                            Log Out
+                        </x-dropdown-item>
+
+                        <form id="logout-form" action="/logout" method="POST" class="hidden">
+                            @csrf
+                        </form>
+
+                    </x-dropdown>
+
+                    {{-- <form action="/logout" method="POST" class="text-xs font-semibold text-blue-500 ml-6">
                         <button type="submit" class="text-xs font-bold uppercase">Log Out</button>
                         @csrf
-                    </form>
+                    </form> --}}
+
                 {{-- if you are a guest --}}
                 @else
                     <a href="/register" class="text-xs font-bold uppercase">Register</a>
